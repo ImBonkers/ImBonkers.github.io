@@ -37,6 +37,11 @@
 
 td{
     min-width: 50px;
+    padding: 10px;
+}
+th{
+    min-width: 50px;
+    padding: 10px;
 }
 
 body {
