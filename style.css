@@ -1,0 +1,43 @@
+.ad {
+    color:peru;
+}
+.ap {
+    color:blue;
+}
+.hp {
+    color:green;
+}
+.mana {
+    color:lightskyblue;
+}
+.lethality {
+    color:#800;
+}
+.true {
+    color:white;
+}
+.armor{
+    color:red;
+}
+.mr {
+    color:purple;
+}
+.crit{
+    color:orange;
+}
+.ms{
+    color:yellow;
+}
+.soul {
+    color:teal;
+}
+.darkHarvest{
+    color:darkred;
+}
+
+
+
+body {
+    background-color: black;
+    color:white;
+}
