@@ -31,8 +31,14 @@
 .soul {
     color:teal;
 }
-.darkHarvest{
+.omnivamp {
     color:darkred;
+}
+.spellvamp {
+    color:green;
+}
+.lifeSteal{
+    color:peru;
 }
 
 td{
