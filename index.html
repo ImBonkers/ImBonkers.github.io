@@ -8,79 +8,20 @@
     />
     <link href="style.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="js/test.js"></script>
+    <script src="js/main.js"></script>
   </head>
   <body>
-    <select id="ChampionSelect">
-      Name
-    </select>
+    <span>
+      <select id="ChampionSelect">
+        Name
+      </select>
+      <b id="LevelLabel">Level: 1</b>
+      <input type="range" id="LevelSlider" min="1" max="30" />
+    </span>
     <table id="ChampionStatsTable">
-      <tr>
+      <tr id="StatTableHeader">
         <th>Attribute</th>
         <th>Total</th>
-        <th id="Base">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="Item1">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="Item2">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="Item3">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="Item4">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="Item5">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="Item6">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="Trinket">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="Passive">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="Q">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="W">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="E">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="R">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="Keystone">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="PrimaryRune1">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="PrimaryRune2">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="PrimaryRune3">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="SecondaryRune1">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="SecondaryRune2">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="Gamemode">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
-        <th id="Misc">
-          <img src="resources/placeholder.jpg" width="20" height="20" />
-        </th>
       </tr>
       <tr id="HP">
         <td>Health</td>

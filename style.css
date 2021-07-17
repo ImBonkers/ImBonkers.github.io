@@ -1,63 +1,69 @@
 .ad {
-    color:peru;
+  color: peru;
 }
 .ap {
-    color:blue;
+  color: blue;
 }
 .hp {
-    color:green;
+  color: green;
+}
+.hpreg {
+  color: green;
 }
 .mana {
-    color:lightskyblue;
+  color: lightskyblue;
+}
+.manareg {
+  color: lightskyblue;
 }
 .lethality {
-    color:#800;
+  color: #800;
 }
 .true {
-    color:white;
+  color: white;
 }
-.armor{
-    color:red;
+.armor {
+  color: red;
 }
-.as{
-    color:darkred;
+.as {
+  color: darkred;
 }
 .mr {
-    color:purple;
+  color: purple;
 }
-.crit{
-    color:orange;
+.crit {
+  color: orange;
 }
-.ms{
-    color:yellow;
+.ms {
+  color: yellow;
 }
 .soul {
-    color:teal;
+  color: teal;
 }
 .omnivamp {
-    color:darkred;
+  color: darkred;
 }
 .spellvamp {
-    color:green;
+  color: green;
 }
-.lifesteal{
-    color:peru;
-}
-
-td{
-    min-width: 50px;
-    padding: 10px;
-    border: 1px solid black;
-}
-th{
-    min-width: 50px;
-    padding: 10px;
+.lifesteal {
+  color: peru;
 }
 
-#ChampionStatsTable{
-    border: 2px solid black;
+td {
+  min-width: 50px;
+  padding: 10px;
+  border: 1px solid black;
+}
+th {
+  min-width: 50px;
+  padding: 10px;
+}
+
+#ChampionStatsTable {
+  border: 2px solid black;
 }
 
 body {
-    background-color: gray;
+  background-color: gray;
 }
