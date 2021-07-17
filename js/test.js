@@ -4,25 +4,30 @@ $(document).ready(function(){
 
     var body = document.body
     var div = document.createElement("div")
+    div.id = "selector_id"
     body.appendChild(div)
-    
-    var input = document.createElement("input")
-    input.type = "text"
-    input.id = "champion_selector"
-    div.appendChild(input)
+    div.append(document.createElement("img"))
 
-    var select = document.createElement("select")
-    select.className = "js-example-basic-single"
-    select.name = "state"
-    addItemToSelect(select, "Hello")
-    addItemToSelect(select, "World")
-    div.appendChild(select)
+    $.getJSON("https://ddragon.leagueoflegends.com/api/versions.json", function(lol_version){
+        $.getJSON("https://ddragon.leagueoflegends.com/cdn/"+lol_version[0]+"/data/en_US/champion.json", function(champion_data) {
+            var select = document.createElement("select")
+            select.className = "champion_selector"
+            select.name = "state"
 
-    $("input").change(function(){
-        document.getElementById("Title").innerHTML = this.value
+            $.each(champion_data["data"], function() {
+                addItemToSelect(select, this.id)
+            });
+
+            var div = document.getElementById("selector_id")
+            div.appendChild(select)
+            
+            $('.champion_selector').select2();
+            $(".champion_selector").change(function(){
+                document.getElementById("Title").innerHTML = this.value
+                document.getElementById("Title")
+            });
+        });
     });
-
-    $('.js-example-basic-single').select2();
 })
 
 function addItemToSelect(parent, name)
