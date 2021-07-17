@@ -35,9 +35,11 @@
     color:darkred;
 }
 
+#ChampionSelect {
+    color:black;
+}
 
 
 body {
-    background-color: black;
-    color:white;
+    background-color: gray;
 }
