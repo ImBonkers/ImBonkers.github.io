@@ -42,6 +42,10 @@ $(document).ready(function(){
             $("#ChampionSelect").change(function(){
                 updateStats(global_champion_data["data"][this.value])
                 updateIcons("champion", "BASE", this.value + ".png")
+                updateIcons("spell", "Q", getRawIconName(this.value+"Q")+".png")
+                updateIcons("spell", "W", getRawIconName(this.value+"W")+".png")
+                updateIcons("spell", "E", getRawIconName(this.value+"E")+".png")
+                updateIcons("spell", "R", getRawIconName(this.value+"R")+".png")
                 calculateAllStats()
             })
             $("#LevelSlider").change(function(){
@@ -119,6 +123,14 @@ function setTableValue(name, value)
         document.getElementById(name).innerHTML = ""
 }
 
+function getRawIconName(name)
+{
+    if (global_icon_name_override[name] === undefined)
+        return name
+    else
+        return global_icon_name_override[name]
+}
+
 function updateStats(champion)
 {
     cstats = champion["stats"]
@@ -143,7 +155,6 @@ function updateStats(champion)
     setTableValue("AttackRadius_BASE", 0)
 }
 
-<<<<<<< Updated upstream
 
 function updateItemStats(bonusType, item)
 {
@@ -171,23 +182,6 @@ function updateItemStats(bonusType, item)
 function updateIcons(type, target, name)
 {
     document.getElementById("Img_" + target.toUpperCase()).src = "https://ddragon.leagueoflegends.com/cdn/"+global_version[0]+"/img/" + type + "/" + name
-=======
-function getRawIconName(name)
-{
-    if (global_icon_name_override[name] === undefined)
-        return name
-    else
-        return global_icon_name_override[name]
-}
-
-function updateIcons(champion_name)
-{
-    document.getElementById("Img_BASE").src = "https://ddragon.leagueoflegends.com/cdn/"+global_version[0]+"/img/champion/"+champion_name+".png"
-    document.getElementById("Img_Q").src = "https://ddragon.leagueoflegends.com/cdn/"+global_version[0]+"/img/spell/"+getRawIconName(champion_name+"Q")+".png"
-    document.getElementById("Img_W").src = "https://ddragon.leagueoflegends.com/cdn/"+global_version[0]+"/img/spell/"+getRawIconName(champion_name+"W")+".png"
-    document.getElementById("Img_E").src = "https://ddragon.leagueoflegends.com/cdn/"+global_version[0]+"/img/spell/"+getRawIconName(champion_name+"E")+".png"
-    document.getElementById("Img_R").src = "https://ddragon.leagueoflegends.com/cdn/"+global_version[0]+"/img/spell/"+getRawIconName(champion_name+"R")+".png"
->>>>>>> Stashed changes
 }
 
 function addItemToSelect(parent, name)
