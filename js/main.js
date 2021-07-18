@@ -13,7 +13,12 @@ let global_stat_names = [
     "HP", "HPReg", "Mana", "ManaReg", "AD", "AP", "AS",
     "LifeSteal", "Spellvamp", "Omnivamp", "Armor", "MR",
     "MS", "Crit", "Range", "CharacterRadius", "AttackRadius"]
-
+let global_mult_scale_calc_exception_tabel = {
+    "LifeSteal" : "AD",
+}
+var global_flat_calc_tabel = {}
+var global_mult_calc_tabel = {}
+var global_total_calc_tabel = {}
 
 $(document).ready(function(){
     
@@ -35,7 +40,6 @@ $(document).ready(function(){
             $.each(global_champion_data["data"], function() {
                 addItemToSelect(select, this.id)
             })
-
             
             
             $("#ChampionSelect").select2();
@@ -135,6 +139,42 @@ function updateStats(champion)
 {
     cstats = champion["stats"]
     clevel = document.getElementById("LevelSlider").value
+    
+    global_flat_calc_tabel["HP_BASE"] = statisticalGrowth(cstats["hp"], cstats["hpperlevel"], clevel)
+    global_flat_calc_tabel["HPReg_BASE" ] = statisticalGrowth(cstats["hpregen"], cstats["hpregenperlevel"], clevel)
+    global_flat_calc_tabel["Mana_BASE" ] = statisticalGrowth(cstats["mp"], cstats["mpperlevel"], clevel)
+    global_flat_calc_tabel["ManaReg_BASE" ] = statisticalGrowth(cstats["mpregen"], cstats["mpregenperlevel"], clevel)
+    global_flat_calc_tabel["AD_BASE" ] = statisticalGrowth(cstats["attackdamage"], cstats["attackdamageperlevel"], clevel)
+    global_flat_calc_tabel["AP_BASE" ] = 0
+    global_flat_calc_tabel["AS_BASE" ] = cstats["attackspeed"]
+    global_flat_calc_tabel["LifeSteal_BASE" ] = 0
+    global_flat_calc_tabel["Spellvamp_BASE" ] = 0
+    global_flat_calc_tabel["Omnivamp_BASE" ] = 0
+    global_flat_calc_tabel["Armor_BASE" ] = statisticalGrowth(cstats["armor"], cstats["armorperlevel"], clevel)
+    global_flat_calc_tabel["MR_BASE" ] = statisticalGrowth(cstats["spellblock"], cstats["spellblockperlevel"], clevel)
+    global_flat_calc_tabel["MS_BASE" ] = cstats["movespeed"]
+    global_flat_calc_tabel["Crit_BASE" ] = cstats["crit"]
+    global_flat_calc_tabel["Range_BASE" ] = cstats["attackrange"]
+    global_flat_calc_tabel["CharacterRadius_BASE" ] = 0
+    global_flat_calc_tabel["AttackRadius_BASE" ] = 0  
+    
+    global_mult_calc_tabel["HP_BASE"] = null
+    global_mult_calc_tabel["HPReg_BASE" ] = null
+    global_mult_calc_tabel["Mana_BASE" ] = null
+    global_mult_calc_tabel["ManaReg_BASE" ] = null
+    global_mult_calc_tabel["AD_BASE" ] = null
+    global_mult_calc_tabel["AP_BASE" ] = null
+    global_mult_calc_tabel["AS_BASE" ] = statisticalGrowth(0, cstats["attackspeedperlevel"] / 100.0, clevel)
+    global_mult_calc_tabel["LifeSteal_BASE" ] = null
+    global_mult_calc_tabel["Spellvamp_BASE" ] = null
+    global_mult_calc_tabel["Omnivamp_BASE" ] = null
+    global_mult_calc_tabel["Armor_BASE" ] = null
+    global_mult_calc_tabel["MR_BASE" ] = null
+    global_mult_calc_tabel["MS_BASE" ] = null
+    global_mult_calc_tabel["Crit_BASE" ] = null
+    global_mult_calc_tabel["Range_BASE" ] = null
+    global_mult_calc_tabel["CharacterRadius_BASE" ] = null
+    global_mult_calc_tabel["AttackRadius_BASE" ] = null
 
     setTableValue("HP_BASE", statisticalGrowth(cstats["hp"], cstats["hpperlevel"], clevel))
     setTableValue("HPReg_BASE",statisticalGrowth(cstats["hpregen"], cstats["hpregenperlevel"], clevel))
@@ -160,7 +200,44 @@ function updateItemStats(bonusType, item)
 {
     stats = item["stats"]
 
-    setTableValue("HP_" + bonusType , stats["FlatHPPoolMod"])
+    global_flat_calc_tabel["HP_" + bonusType] = stats["FlatHPPoolMod"]
+    global_flat_calc_tabel["HPReg_" + bonusType ] = null
+    global_flat_calc_tabel["Mana_" + bonusType ] = stats["FlatMPPoolMod"]
+    global_flat_calc_tabel["ManaReg_" + bonusType ] = null
+    global_flat_calc_tabel["AD_" + bonusType ] = stats["FlatPhysicalDamageMod"]
+    global_flat_calc_tabel["AP_" + bonusType ] = stats["FlatMagicDamageMod"]
+    global_flat_calc_tabel["AS_" + bonusType ] = stats["FlatAttackSpeedMod"]
+    global_flat_calc_tabel["LifeSteal_" + bonusType ] = stats["FlatLifeStealMod"]
+    global_flat_calc_tabel["Spellvamp_" + bonusType ] = stats["FlatSpellvampMod"]
+    global_flat_calc_tabel["Omnivamp_" + bonusType ] = null
+    global_flat_calc_tabel["Armor_" + bonusType ] = stats["FlatArmorMod"]
+    global_flat_calc_tabel["MR_" + bonusType ] = stats["FlatSpellBlockMod"]
+    global_flat_calc_tabel["MS_" + bonusType ] = stats["FlatMoveSpeedMod"]
+    global_flat_calc_tabel["Crit_" + bonusType ] = stats["FlatCritChanceMod"]
+    global_flat_calc_tabel["Range_" + bonusType ] = null
+    global_flat_calc_tabel["CharacterRadius_" + bonusType ] = null
+    global_flat_calc_tabel["AttackRadius_" + bonusType ] = null  
+    
+    global_mult_calc_tabel["HP_" + bonusType] = stats["PercentHPPoolMod"]
+    global_mult_calc_tabel["HPReg_" + bonusType ] = null
+    global_mult_calc_tabel["Mana_" + bonusType ] = stats["PercentMPPoolMod"]
+    global_mult_calc_tabel["ManaReg_" + bonusType ] = null
+    global_mult_calc_tabel["AD_" + bonusType ] = stats["PercentPhysicalDamageMod"]
+    global_mult_calc_tabel["AP_" + bonusType ] = stats["PercentMagicDamageMod"]
+    global_mult_calc_tabel["AS_" + bonusType ] = stats["PercentAttackSpeedMod"]
+    global_mult_calc_tabel["LifeSteal_" + bonusType ] = stats["PercentLifeStealMod"]
+    global_mult_calc_tabel["Spellvamp_" + bonusType ] = stats["PercentSpellvampMod"]
+    global_mult_calc_tabel["Omnivamp_" + bonusType ] = null
+    global_mult_calc_tabel["Armor_" + bonusType ] = stats["PercentArmorMod"]
+    global_mult_calc_tabel["MR_" + bonusType ] = stats["PercentSpellBlockMod"]
+    global_mult_calc_tabel["MS_" + bonusType ] = stats["PercentMoveSpeedMod"]
+    global_mult_calc_tabel["Crit_" + bonusType ] = stats["PercentCritChanceMod"]
+    global_mult_calc_tabel["Range_" + bonusType ] = null
+    global_mult_calc_tabel["CharacterRadius_" + bonusType ] = null
+    global_mult_calc_tabel["AttackRadius_" + bonusType ] = null  
+
+
+    setTableValue("HP_" + bonusType, stats["FlatHPPoolMod"])                    
     setTableValue("HPReg_" + bonusType, null)
     setTableValue("Mana_" + bonusType, stats["FlatMPPoolMod"])
     setTableValue("ManaReg_" + bonusType, null)
@@ -176,7 +253,7 @@ function updateItemStats(bonusType, item)
     setTableValue("Crit_" + bonusType, stats["FlatCritChanceMod"])
     setTableValue("Range_" + bonusType, null)
     setTableValue("CharacterRadius_" + bonusType, null)
-    setTableValue("AttackRadius_" + bonusType, null)
+    setTableValue("AttackRadius_" + bonusType, null)                        
 }
 
 function updateIcons(type, target, name)
@@ -196,26 +273,53 @@ function statisticalGrowth(b, g, l)
     return b + (g * (l-1)) * (0.7025+(0.0175*(l-1)))
 }
 
-function calculateAttackSpeed(b, g, l, bonus)
+function calculateAttackSpeed(base, g, l, bonus)
 {
-    return b * (1+(statisticalGrowth(0, g, l) + bonus)/100)
+    return base * (1 + (statisticalGrowth(0, g, l)/100))
 }
 
 function calculateAllStats(){
     $.each(global_stat_names, function() {
-        var value = calculateStat(this)
-        setTableValue(this + "_TOTAL", value)
+        var flat = calculateFlatStat(this)
+        var mult = calculateMultStat(this)
+        var mod = global_mult_scale_calc_exception_tabel[this]
+        if(global_mult_scale_calc_exception_tabel[this]){
+            mod = global_total_calc_tabel[mod]
+            console.log(mod)
+        }
+        else{
+            mod = flat
+        }
+        mult ??= 0
+        flat ??= 0
+        mod ??= 0
+        global_total_calc_tabel[this] = mod * mult + flat
+        setTableValue(this + "_TOTAL", global_total_calc_tabel[this])
     })
 }
 
-function calculateStat(name){
+function calculateFlatStat(name){
     var value = 0.0
     $.each(global_col_keys, function() {
         if(this != "TOTAL")
         {
-            var field = document.getElementById(name + "_" + this)
-            if(field.innerHTML != "")
-                value += parseFloat(field.innerHTML)
+            var flat = global_flat_calc_tabel[name + "_" + this]
+
+            if(flat != null)
+                value += flat
+        }
+    })
+    return value
+}
+function calculateMultStat(name){
+    var value = 0.0
+    $.each(global_col_keys, function() {
+        if(this != "TOTAL")
+        {
+            var mult = global_mult_calc_tabel[name + "_" + this]
+
+            if(mult != null)
+                value += mult
         }
     })
     return value
