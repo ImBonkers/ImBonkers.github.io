@@ -66,6 +66,7 @@ $(document).ready(function(){
                     updateItemStats(itemSelectID.toUpperCase(), myItem)
                     updateIcons("item", itemSelectID, myItem.image.full)
                     calculateAllStats()
+                    console.log(calculateAutoAttackDPS())
                 })
             }
         })
@@ -198,12 +199,16 @@ function calculateStat(name){
         if(this != "TOTAL")
         {
             var field = document.getElementById(name + "_" + this)
-            console.log(field.innerHTML)
             if(field.innerHTML != "")
                 value += parseFloat(field.innerHTML)
-            else
-                console.log(field)
         }
     })
     return value
+}
+
+function calculateAutoAttackDPS() {
+    var as = parseFloat(document.getElementById("AS_TOTAL").innerHTML)
+    var ad = parseFloat(document.getElementById("AD_TOTAL").innerHTML)
+    var crit = parseFloat(document.getElementById("Crit_TOTAL").innerHTML)
+    return as * ad * (1 + crit)
 }
