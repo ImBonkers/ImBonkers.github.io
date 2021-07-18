@@ -1,6 +1,8 @@
 
+let global_item_data = Object
 let global_champion_data = Object
 let global_version = Object
+let global_item_name_to_id = Object
 let global_col_keys = [
     "TOTAL", "BASE", "ITEM1", "ITEM2", "ITEM3", "ITEM4", "ITEM5", "ITEM6",
     "TRINKET", "PASSIVE", "Q", "W", "E", "R", 
@@ -21,12 +23,13 @@ $(document).ready(function(){
     document.getElementById("LevelSlider").value = 1
 
     $.getJSON("https://ddragon.leagueoflegends.com/api/versions.json", function(lol_version){
+        global_version = {...lol_version}
+
         $.getJSON("https://ddragon.leagueoflegends.com/cdn/"+lol_version[0]+"/data/en_US/champion.json", function(champion_data) {
             var select = document.getElementById("ChampionSelect")
             select.name = "state"
 
             global_champion_data = {...champion_data}
-            global_version = {...lol_version}
 
             $.each(global_champion_data["data"], function() {
                 addItemToSelect(select, this.id)
@@ -34,15 +37,37 @@ $(document).ready(function(){
             
             $("#ChampionSelect").select2();
             $("#ChampionSelect").change(function(){
-                updateStats(this.value)
-                updateIcons(this.value)
+                updateStats(global_champion_data["data"][this.value])
+                updateIcons("champion", "BASE", this.value + ".png")
             })
             $("#LevelSlider").change(function(){
                 document.getElementById("LevelLabel").innerHTML = "Level: " + this.value
 
                 champion_name = document.getElementById("ChampionSelect").value
-                updateStats(champion_name)
+                updateStats(global_champion_data["data"][champion_name])
             })
+        })
+        $.getJSON("https://ddragon.leagueoflegends.com/cdn/"+lol_version[0]+"/data/en_US/item.json", function(item_data) {
+
+            for(var k = 1; k <= 6; k++){
+                let itemSelectID = "Item" + k;
+                var item = document.getElementById(itemSelectID)
+                global_item_data = {...item_data}
+                console.log(item_data)
+                var i = 0
+                $.each(global_item_data["data"], function(){
+                    addItemToSelect(item, this.name)
+                    console.log(this.image.full.substring(0, this.image.full.length - 4))
+                    global_item_name_to_id[this.name] = this.image.full.substring(0, this.image.full.length - 4)
+                })
+
+                $("#Item" + k).select2();
+                $("#Item" + k).change(function(){
+                    let myItem = global_item_data["data"][global_item_name_to_id[this.value]]
+                    updateItemStats(itemSelectID.toUpperCase(), myItem)
+                    updateIcons("item", itemSelectID, myItem.image.full)
+                })
+            }
         })
     })
 })
@@ -84,12 +109,15 @@ function createRowElements(row, className, Prefix)
 
 function setTableValue(name, value)
 {
-    document.getElementById(name).innerHTML = value.toFixed(3)
+    if(value != null)
+        document.getElementById(name).innerHTML = value.toFixed(3)
+    else
+        document.getElementById(name).innerHTML = ""
 }
 
-function updateStats(champion_name)
+function updateStats(champion)
 {
-    cstats = global_champion_data["data"][champion_name]["stats"]
+    cstats = champion["stats"]
     clevel = document.getElementById("LevelSlider").value
 
     setTableValue("HP_BASE", statisticalGrowth(cstats["hp"], cstats["hpperlevel"], clevel))
@@ -111,9 +139,34 @@ function updateStats(champion_name)
     setTableValue("AttackRadius_BASE", 0)
 }
 
-function updateIcons(champion_name)
+
+function updateItemStats(bonusType, item)
 {
-    document.getElementById("Img_BASE").src = "https://ddragon.leagueoflegends.com/cdn/"+global_version[0]+"/img/champion/"+champion_name+".png"
+    console.log("HP_" + bonusType)
+    stats = item["stats"]
+
+    setTableValue("HP_" + bonusType , stats["FlatHPPoolMod"])
+    setTableValue("HPReg_" + bonusType, null)
+    setTableValue("Mana_" + bonusType, stats["FlatMPPoolMod"])
+    setTableValue("ManaReg_" + bonusType, null)
+    setTableValue("AD_" + bonusType, stats["FlatPhysicalDamageMod"])
+    setTableValue("AP_" + bonusType, stats["FlatMagicDamageMod"])
+    setTableValue("AS_" + bonusType, stats["PercentAttackSpeedMod"])
+    setTableValue("LifeSteal_" + bonusType, stats["fdasfdsafdsa"])
+    setTableValue("Spellvamp_" + bonusType, stats["fdsafdsafdsa"])
+    setTableValue("Omnivamp_" + bonusType, stats["fdsafdsafdsafdsa"])
+    setTableValue("Armor_" + bonusType, stats["FlatArmorMod"])
+    setTableValue("MR_" + bonusType, stats["FlatSpellBlockMod"])
+    setTableValue("MS_" + bonusType, stats["FlatMoveSpeedMod"])
+    setTableValue("Crit_" + bonusType, stats["FlatCritChanceMod"])
+    setTableValue("Range_" + bonusType, null)
+    setTableValue("CharacterRadius_" + bonusType, null)
+    setTableValue("AttackRadius_" + bonusType, null)
+}
+
+function updateIcons(type, target, name)
+{
+    document.getElementById("Img_" + target.toUpperCase()).src = "https://ddragon.leagueoflegends.com/cdn/"+global_version[0]+"/img/" + type + "/" + name
 }
 
 function addItemToSelect(parent, name)
