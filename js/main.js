@@ -1,8 +1,9 @@
 
 let global_item_data = Object
-let global_champion_data = Object
+let global_champions_data = Object
 let global_version = Object
 let global_item_name_to_id = Object
+let global_champ_name_to_id = Object
 let global_col_keys = [
     "TOTAL", "BASE", "ITEM1", "ITEM2", "ITEM3", "ITEM4", "ITEM5", "ITEM6",
     "TRINKET", "PASSIVE", "Q", "W", "E", "R", 
@@ -31,32 +32,28 @@ $(document).ready(function(){
     $.getJSON("https://ddragon.leagueoflegends.com/api/versions.json", function(lol_version){
         global_version = {...lol_version}
 
-        $.getJSON("https://ddragon.leagueoflegends.com/cdn/"+lol_version[0]+"/data/en_US/champion.json", function(champion_data) {
+        $.getJSON("https://ddragon.leagueoflegends.com/cdn/"+lol_version[0]+"/data/en_US/championFull.json", function(champions_data) {
             var select = document.getElementById("ChampionSelect")
             select.name = "state"
 
-            global_champion_data = {...champion_data}
+            global_champions_data = {...champions_data}
 
-            $.each(global_champion_data["data"], function() {
-                addItemToSelect(select, this.id)
+            $.each(global_champions_data["data"], function() {
+                addItemToSelect(select, this.name)
+                global_champ_name_to_id[this.name] = this.id
             })
-            
-            
+            updateChampion(select.value)
+
             $("#ChampionSelect").select2();
             $("#ChampionSelect").change(function(){
-                updateStats(global_champion_data["data"][this.value])
-                updateIcons("champion", "BASE", this.value + ".png")
-                updateIcons("spell", "Q", getRawIconName(this.value+"Q")+".png")
-                updateIcons("spell", "W", getRawIconName(this.value+"W")+".png")
-                updateIcons("spell", "E", getRawIconName(this.value+"E")+".png")
-                updateIcons("spell", "R", getRawIconName(this.value+"R")+".png")
+                updateChampion(this.value)
                 calculateAllStats()
             })
             $("#LevelSlider").change(function(){
                 document.getElementById("LevelLabel").innerHTML = "Level: " + this.value
 
                 champion_name = document.getElementById("ChampionSelect").value
-                updateStats(global_champion_data["data"][champion_name])
+                updateStats(global_champions_data["data"][champion_name])
                 calculateAllStats()
             })
         })
@@ -127,12 +124,9 @@ function setTableValue(name, value)
         document.getElementById(name).innerHTML = ""
 }
 
-function getRawIconName(name)
+function getRawChampName(name)
 {
-    if (global_icon_name_override[name] === undefined)
-        return name
-    else
-        return global_icon_name_override[name]
+    return global_champ_name_to_id[name]
 }
 
 function updateStats(champion)
@@ -330,4 +324,19 @@ function calculateAutoAttackDPS() {
     var ad = parseFloat(document.getElementById("AD_TOTAL").innerHTML)
     var crit = parseFloat(document.getElementById("Crit_TOTAL").innerHTML)
     return as * ad * (1 + crit)
+}
+
+function updateChampion(name)
+{
+    champion_id = getRawChampName(name)
+    
+    updateStats(global_champions_data["data"][champion_id])
+
+    updateIcons("champion", "BASE", champion_id + ".png")
+
+    i = 0
+    $.each(global_champions_data["data"][champion_id]["spells"], function(){
+        i += 1
+        updateIcons("spell", global_col_keys[10+i], this.id+".png")
+    })
 }
