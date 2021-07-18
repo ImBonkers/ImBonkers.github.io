@@ -39,12 +39,14 @@ $(document).ready(function(){
             $("#ChampionSelect").change(function(){
                 updateStats(global_champion_data["data"][this.value])
                 updateIcons("champion", "BASE", this.value + ".png")
+                calculateAllStats()
             })
             $("#LevelSlider").change(function(){
                 document.getElementById("LevelLabel").innerHTML = "Level: " + this.value
 
                 champion_name = document.getElementById("ChampionSelect").value
                 updateStats(global_champion_data["data"][champion_name])
+                calculateAllStats()
             })
         })
         $.getJSON("https://ddragon.leagueoflegends.com/cdn/"+lol_version[0]+"/data/en_US/item.json", function(item_data) {
@@ -53,11 +55,8 @@ $(document).ready(function(){
                 let itemSelectID = "Item" + k;
                 var item = document.getElementById(itemSelectID)
                 global_item_data = {...item_data}
-                console.log(item_data)
-                var i = 0
                 $.each(global_item_data["data"], function(){
                     addItemToSelect(item, this.name)
-                    console.log(this.image.full.substring(0, this.image.full.length - 4))
                     global_item_name_to_id[this.name] = this.image.full.substring(0, this.image.full.length - 4)
                 })
 
@@ -66,6 +65,7 @@ $(document).ready(function(){
                     let myItem = global_item_data["data"][global_item_name_to_id[this.value]]
                     updateItemStats(itemSelectID.toUpperCase(), myItem)
                     updateIcons("item", itemSelectID, myItem.image.full)
+                    calculateAllStats()
                 })
             }
         })
@@ -142,7 +142,6 @@ function updateStats(champion)
 
 function updateItemStats(bonusType, item)
 {
-    console.log("HP_" + bonusType)
     stats = item["stats"]
 
     setTableValue("HP_" + bonusType , stats["FlatHPPoolMod"])
@@ -184,4 +183,27 @@ function statisticalGrowth(b, g, l)
 function calculateAttackSpeed(b, g, l, bonus)
 {
     return b * (1+(statisticalGrowth(0, g, l) + bonus)/100)
+}
+
+function calculateAllStats(){
+    $.each(global_stat_names, function() {
+        var value = calculateStat(this)
+        setTableValue(this + "_TOTAL", value)
+    })
+}
+
+function calculateStat(name){
+    var value = 0.0
+    $.each(global_col_keys, function() {
+        if(this != "TOTAL")
+        {
+            var field = document.getElementById(name + "_" + this)
+            console.log(field.innerHTML)
+            if(field.innerHTML != "")
+                value += parseFloat(field.innerHTML)
+            else
+                console.log(field)
+        }
+    })
+    return value
 }
