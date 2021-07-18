@@ -14,6 +14,7 @@ let global_stat_names = [
     "LifeSteal", "Spellvamp", "Omnivamp", "Armor", "MR",
     "MS", "Crit", "Range", "CharacterRadius", "AttackRadius"]
 
+
 $(document).ready(function(){
     
     global_stat_names.forEach(key => {
@@ -34,6 +35,8 @@ $(document).ready(function(){
             $.each(global_champion_data["data"], function() {
                 addItemToSelect(select, this.id)
             })
+
+            
             
             $("#ChampionSelect").select2();
             $("#ChampionSelect").change(function(){
@@ -80,8 +83,8 @@ function createRowHeader(header)
         th = document.createElement("th")
         img = document.createElement("img")
         img.src = "resources/placeholder.jpg"
-        img.width = 20;
-        img.height = 20;
+        img.width = 40;
+        img.height = 40;
         img.id = id;
         th.appendChild(img)
         return th
@@ -140,6 +143,7 @@ function updateStats(champion)
     setTableValue("AttackRadius_BASE", 0)
 }
 
+<<<<<<< Updated upstream
 
 function updateItemStats(bonusType, item)
 {
@@ -167,6 +171,23 @@ function updateItemStats(bonusType, item)
 function updateIcons(type, target, name)
 {
     document.getElementById("Img_" + target.toUpperCase()).src = "https://ddragon.leagueoflegends.com/cdn/"+global_version[0]+"/img/" + type + "/" + name
+=======
+function getRawIconName(name)
+{
+    if (global_icon_name_override[name] === undefined)
+        return name
+    else
+        return global_icon_name_override[name]
+}
+
+function updateIcons(champion_name)
+{
+    document.getElementById("Img_BASE").src = "https://ddragon.leagueoflegends.com/cdn/"+global_version[0]+"/img/champion/"+champion_name+".png"
+    document.getElementById("Img_Q").src = "https://ddragon.leagueoflegends.com/cdn/"+global_version[0]+"/img/spell/"+getRawIconName(champion_name+"Q")+".png"
+    document.getElementById("Img_W").src = "https://ddragon.leagueoflegends.com/cdn/"+global_version[0]+"/img/spell/"+getRawIconName(champion_name+"W")+".png"
+    document.getElementById("Img_E").src = "https://ddragon.leagueoflegends.com/cdn/"+global_version[0]+"/img/spell/"+getRawIconName(champion_name+"E")+".png"
+    document.getElementById("Img_R").src = "https://ddragon.leagueoflegends.com/cdn/"+global_version[0]+"/img/spell/"+getRawIconName(champion_name+"R")+".png"
+>>>>>>> Stashed changes
 }
 
 function addItemToSelect(parent, name)
