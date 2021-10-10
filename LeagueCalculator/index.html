@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <link href="style.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/lol_icon_override.js"></script>
+  </head>
+  <body>
+    <span>
+      <select id="ChampionSelect">
+        Name
+      </select>
+      <b id="LevelLabel">Level: 1</b>
+      <input type="range" id="LevelSlider" min="1" max="30" />
+    </span>
+    <table id="ChampionStatsTable">
+      <tr id="StatTableHeader">
+        <th>Attribute</th>
+        <th>Total</th>
+      </tr>
+      <tr id="HP">
+        <td>Health</td>
+      </tr>
+      <tr id="HPReg">
+        <td>Health Regen</td>
+      </tr>
+      <tr id="Mana">
+        <td>Mana</td>
+      </tr>
+      <tr id="ManaReg">
+        <td>Mana Regen</td>
+      </tr>
+      <tr id="AD">
+        <td>Damage</td>
+      </tr>
+      <tr id="AP">
+        <td>Ability Power</td>
+      </tr>
+      <tr id="AS">
+        <td>Attack Speed</td>
+      </tr>
+      <tr id="LifeSteal">
+        <td>Life Steal</td>
+      </tr>
+      <tr id="Spellvamp">
+        <td>Spellvamp</td>
+      </tr>
+      <tr id="Omnivamp">
+        <td>Omnivamp</td>
+      </tr>
+      <tr id="Armor">
+        <td>Armor</td>
+      </tr>
+      <tr id="MR">
+        <td>Magic Resist</td>
+      </tr>
+      <tr id="MS">
+        <td>Move Speed</td>
+      </tr>
+      <tr id="Crit">
+        <td>Critical Strike</td>
+      </tr>
+      <tr id="Range">
+        <td>Range</td>
+      </tr>
+      <tr id="CharacterRadius">
+        <td>Character Radius</td>
+      </tr>
+      <tr id="AttackRadius">
+        <td>Attack Radius</td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td>
+          <select id="Item1">
+            Item1
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <select id="Item2">
+            Item2
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <select id="Item3">
+            Item3
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <select id="Item4">
+            Item4
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <select id="Item5">
+            Item5
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <select id="Item6">
+            Item6
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <select id="PrimaryRunePage">
+            Type
+          </select>
+        </td>
+        <td>
+          <select id="Keystone">
+            Keystone
+          </select>
+        </td>
+        <td>
+          <select id="PR1">
+            Keystone
+          </select>
+        </td>
+        <td>
+          <select id="PR2">
+            Keystone
+          </select>
+        </td>
+        <td>
+          <select id="PR3">
+            Keystone
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <select id="SecondaryRunePage">
+            Type
+          </select>
+        </td>
+        <td>
+          <select id="SR1">
+            Keystone
+          </select>
+        </td>
+        <td>
+          <select id="SR2">
+            Keystone
+          </select>
+        </td>
+        <td>
+          <select id="SR3">
+            Keystone
+          </select>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

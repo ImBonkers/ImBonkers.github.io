@@ -1,0 +1,50 @@
+// New World Map SCSS
+:root {
+  --theme: #6ae419;
+  --background: #252525;
+  --background-nav: #363636;
+  --background-shadow: #292929;
+  --background-text: #7e807d;
+  --background-emph-text: #859978;
+  --background-gradient: linear-gradient(
+    90deg,
+    var(--background) 0%,
+    var(--theme) 33%,
+    var(--background-nav) 90%
+  );
+
+  --navbar-clickable: #9ee470;
+
+  --code-back: 75%;
+  --code-front: 100%;
+  --code-font-size: 0.9em;
+
+  --default: #d4d4d4;
+  --in-type: #569cd6;
+  --user-type: #4ec9b0;
+  --method: #dcdcaa;
+  --variable: #9cdcfe;
+  --statement: #c586c0;
+  --clickable: #ffe551;
+}
+
+body {
+  background: var(--background);
+  margin: 0;
+  font-family: "hack";
+  color: var(--background-text);
+
+  overflow: hidden;
+}
+
+.map {
+  border: 0.2em solid var(--background-nav);
+  border-radius: 0.2em;
+  width: 50vw;
+  height: 50vh;
+  canvas.canvas {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+  }
+}

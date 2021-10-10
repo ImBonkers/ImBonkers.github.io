@@ -1,0 +1,155 @@
+// Main page SCSS
+:root {
+  --theme: #6ae419;
+  --background: #252525;
+  --background-nav: #363636;
+  --background-shadow: #292929;
+  --background-text: #7e807d;
+  --background-emph-text: #859978;
+  --background-gradient: linear-gradient(
+    90deg,
+    var(--background) 0%,
+    var(--theme) 33%,
+    var(--background-nav) 90%
+  );
+
+  --navbar-clickable: #9ee470;
+
+  --code-back: 75%;
+  --code-front: 100%;
+  --code-font-size: 0.9em;
+
+  --default: #d4d4d4;
+  --in-type: #569cd6;
+  --user-type: #4ec9b0;
+  --method: #dcdcaa;
+  --variable: #9cdcfe;
+  --statement: #c586c0;
+  --clickable: #ffe551;
+}
+
+body {
+  background: var(--background);
+  margin: 0;
+  font-family: "hack";
+
+  overflow: hidden;
+}
+
+a {
+  color: white;
+}
+
+.markdown-body {
+  color: var(--default);
+  .in-type {
+    color: var(--in-type);
+    opacity: var(--code-back);
+  }
+  .user-type {
+    color: var(--user-type);
+    opacity: var(--code-back);
+  }
+  .method {
+    color: var(--method);
+    opacity: var(--code-back);
+  }
+  .variable {
+    color: var(--variable);
+    opacity: var(--code-back);
+  }
+  .statement {
+    color: var(--statement);
+    opacity: var(--code-back);
+  }
+  .clickable {
+    color: var(--clickable);
+    opacity: var(--code-front);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .indent-1 {
+    margin-left: 1em;
+  }
+}
+
+.navbar {
+  background: var(--background-nav);
+  box-shadow: 0 0 20px var(--background-shadow);
+
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 999;
+
+  .container {
+    padding: 1em;
+    text-align: left;
+
+    .logo {
+      color: var(--theme);
+      text-decoration: none;
+      font-size: 1.2em;
+    }
+
+    .new-world-map {
+      float: right;
+      color: var(--navbar-clickable);
+      text-decoration: none;
+    }
+  }
+}
+
+.hero-section {
+  text-align: left;
+  font-size: var(--code-font-size);
+
+  .container {
+    margin: 10em 10%;
+    top: 100em;
+
+    .bio {
+      .introduction {
+        margin: 0 0 0.5em;
+        color: var(--theme);
+        font-size: 1em;
+      }
+      .name {
+        margin: 0 0 0.3em;
+
+        color: var(--background-emph-text);
+        font-size: 3em;
+      }
+      .what-i-do {
+        margin: 0 0 0.5em;
+        width: 90%;
+        word-wrap: break-word;
+        color: var(--background-text);
+      }
+      .body {
+        margin: 0 0 0.5em;
+        width: 50%;
+        max-width: 500px;
+        min-width: 300px;
+        word-wrap: break-word;
+        color: var(--background-text);
+      }
+    }
+
+    .code-container {
+      word-wrap: break-word;
+
+      background-color: var(--background-nav);
+      border: solid;
+      border-radius: 0.5em;
+      border-color: var(--background-nav);
+    }
+  }
+}
+
+.content-section {
+  .container {
+    width: 100vw;
+    height: 100vh;
+  }
+}
