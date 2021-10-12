@@ -36,7 +36,7 @@ $(document).ready(function()
     {
         zoom_power = get_zoom_scale(zoom)
         zoom_delta = zoom
-        zoom += event.deltaY * -0.01;
+        zoom += Math.sign(event.deltaY * -0.01);
         zoom = (zoom < 2? 2 : (zoom > 8)?8 : zoom);
         zoom_delta = zoom - zoom_delta;
 
@@ -48,10 +48,12 @@ $(document).ready(function()
             y:(mouse_pos.y - 0.5) / (2*zoom_power)
         }
 
+        
         relative_offset = {
             x: (offset.x + mouse_pos.x * (1/ zoom_power)),
             y: (offset.y + mouse_pos.y * (1/ zoom_power))
         }
+        
 
         if (zoom_delta > 0){
             offset = {
@@ -132,7 +134,7 @@ function get_canvas_ratio(canvas){
 }
 
 function get_url(x, y, zoom){
-    url = "https://cdn.newworldfans.com/newworldmap/" + new String(zoom) + "/" + new String(x) + "/" + new String(y) + ".png"
+    url = "https://cdn.newworldfans.com/newworldmap/" + new String(clamped_zoom(zoom)) + "/" + new String(x) + "/" + new String(y) + ".png"
     return url;
 }
 
@@ -172,8 +174,8 @@ function draw_offset(offset, zoom, canvas){
     canvas.getContext("2d").strokeRect(
         offset.x * canvas.width,
         offset.y * canvas.height,
-        canvas.width / Math.pow(2, zoom-2),
-        canvas.height / Math.pow(2, zoom-2)
+        canvas.width / get_zoom_scale(zoom),
+        canvas.height / get_zoom_scale(zoom)
     );
 }
 
@@ -210,10 +212,11 @@ const load_image = url => {
 }
 
 async function images_loaded(region, zoom){
+
     for (let x = region.lower_x; x < region.upper_x; x++) {
         for (let y = region.lower_y; y < region.upper_y; y++) {
             load_image(get_url(x, y, zoom)).then(img => {
-                sections[zoom][[x, y]] = img;
+                sections[clamped_zoom(zoom)][[x, y]] = img;
             });
         }
     }
@@ -237,13 +240,13 @@ function update_map(canvas, zoom, offset){
                 if (!sections[clamped_zoom(zoom)][[x,y]]){
                     load_image(get_url(x, y, zoom)).then(img => {
                         sections[clamped_zoom(zoom)][[x, y]] = img;
-                        draw_image(x-offset.x*Math.pow(2, zoom), y-offset.y*Math.pow(2, zoom), canvas, img);
+                        draw_image(x-offset.x*clamped_zoom(zoom), y-offset.y*clamped_zoom(zoom), canvas, img);
                         // draw_offset(offset, zoom, canvas);
                         // draw_section(x, y, zoom, canvas, offset);
                     });
                 }
                 else{
-                    draw_image(x-offset.x*Math.pow(2, zoom), y-offset.y*Math.pow(2, zoom), canvas, sections[zoom][[x, y]]);
+                    draw_image(x-offset.x*Math.pow(2, clamped_zoom(zoom)), y-offset.y*Math.pow(2, clamped_zoom(zoom)), canvas, sections[clamped_zoom(zoom)][[x, y]]);
                 }
             }
         }
