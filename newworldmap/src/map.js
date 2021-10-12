@@ -8,6 +8,8 @@ const SECTION_COUNT = 4;
 $(document).ready(function()
 {
     var canvas = document.getElementById("map-canvas");
+    canvas.width =  2000;
+    canvas.height = 2000;
 
     sections = {2:{},3:{},4:{},5:{},6:{},7:{},8:{}}
     var offset = {x:0 - (get_canvas_ratio(canvas) - 1)/2, y:0};
@@ -24,7 +26,6 @@ $(document).ready(function()
         delta_r = tmp - canvas_ratio;
         canvas_ratio = tmp;
         canvas_rect = tmp;
-        console.log(delta_r)
         offset = {
             x:offset.x - (delta_r/(2*get_zoom_scale(zoom))),
             y:offset.y
@@ -38,6 +39,9 @@ $(document).ready(function()
         zoom += event.deltaY * -0.01;
         zoom = (zoom < 2? 2 : (zoom > 8)?8 : zoom);
         zoom_delta = zoom - zoom_delta;
+
+        console.log(zoom);
+        console.log(event.deltaY);
 
         mouse_offset = {
             x:(mouse_pos.x - 0.5) / (2*zoom_power),
@@ -212,9 +216,6 @@ async function images_loaded(region, zoom){
 }
 
 function update_map(canvas, zoom, offset){
-    canvas.width =  2000;
-    canvas.height = 2000;
-
     var boundary = {lower: 0, upper: ZOOM_SECTIONS[zoom]};
     var region = {
         lower_x:boundary.lower + Math.floor(offset.x * ZOOM_SECTIONS[zoom]),
