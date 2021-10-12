@@ -34,7 +34,7 @@ $(document).ready(function()
 
     canvas.addEventListener("mousewheel", function(event)
     {
-        zoom_power = Math.pow(2, zoom-2)
+        zoom_power = get_zoom_scale(zoom)
         zoom_delta = zoom
         zoom += event.deltaY * -0.01;
         zoom = (zoom < 2? 2 : (zoom > 8)?8 : zoom);
@@ -106,8 +106,12 @@ $(document).ready(function()
     requestAnimationFrame(render);
 });
 
+function clamped_zoom(zoom){
+    return Math.floor(zoom);
+}
+
 function get_zoom_scale(zoom){
-    return Math.pow(2, zoom-2);
+    return Math.pow(2, clamped_zoom(zoom)-2);
 }
 
 
@@ -216,12 +220,12 @@ async function images_loaded(region, zoom){
 }
 
 function update_map(canvas, zoom, offset){
-    var boundary = {lower: 0, upper: ZOOM_SECTIONS[zoom]};
+    var boundary = {lower: 0, upper: ZOOM_SECTIONS[clamped_zoom(zoom)]};
     var region = {
-        lower_x:boundary.lower + Math.floor(offset.x * ZOOM_SECTIONS[zoom]),
-        lower_y:boundary.lower + Math.floor(offset.y * ZOOM_SECTIONS[zoom]),
-        upper_x:boundary.lower + Math.ceil(offset.x * ZOOM_SECTIONS[zoom]) + SECTION_COUNT*get_canvas_ratio(canvas),
-        upper_y:boundary.lower + Math.ceil(offset.y * ZOOM_SECTIONS[zoom]) + SECTION_COUNT,
+        lower_x:boundary.lower + Math.floor(offset.x * ZOOM_SECTIONS[clamped_zoom(zoom)]),
+        lower_y:boundary.lower + Math.floor(offset.y * ZOOM_SECTIONS[clamped_zoom(zoom)]),
+        upper_x:boundary.lower + Math.ceil(offset.x * ZOOM_SECTIONS[clamped_zoom(zoom)]) + SECTION_COUNT*get_canvas_ratio(canvas),
+        upper_y:boundary.lower + Math.ceil(offset.y * ZOOM_SECTIONS[clamped_zoom(zoom)]) + SECTION_COUNT,
     };
 
     region = clamp_region(region, boundary);
@@ -230,9 +234,9 @@ function update_map(canvas, zoom, offset){
     images_loaded(region, zoom).then(() => {
         for (let x = region.lower_x; x < region.upper_x; x++) {
             for (let y = region.lower_y; y < region.upper_y; y++) {
-                if (!sections[zoom][[x,y]]){
+                if (!sections[clamped_zoom(zoom)][[x,y]]){
                     load_image(get_url(x, y, zoom)).then(img => {
-                        sections[zoom][[x, y]] = img;
+                        sections[clamped_zoom(zoom)][[x, y]] = img;
                         draw_image(x-offset.x*Math.pow(2, zoom), y-offset.y*Math.pow(2, zoom), canvas, img);
                         // draw_offset(offset, zoom, canvas);
                         // draw_section(x, y, zoom, canvas, offset);
