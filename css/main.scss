@@ -31,13 +31,21 @@
 body {
   background: var(--background);
   margin: 0;
-  font-family: "hack";
+  font-family: "Hack";
 
   overflow: hidden;
 }
 
 a {
   color: white;
+}
+
+.title {
+  color: var(--background-text);
+}
+
+label {
+  color: var(--background-text);
 }
 
 .markdown-body {
@@ -77,7 +85,7 @@ a {
   background: var(--background-nav);
   box-shadow: 0 0 20px var(--background-shadow);
 
-  position: fixed;
+  // position: fixed; find a way to make it fixed after scrolling
   width: 100%;
   top: 0;
   z-index: 999;
@@ -92,8 +100,9 @@ a {
       font-size: 1.2em;
     }
 
-    .new-world-map {
+    .right-side {
       float: right;
+      margin: 0em 1em;
       color: var(--navbar-clickable);
       text-decoration: none;
     }

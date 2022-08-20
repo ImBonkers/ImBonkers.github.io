@@ -1,4 +1,3 @@
-
 const ZOOM_SECTIONS = {
     2:4, 3:8, 4:16, 5:32, 6:64, 7:128, 8:256
     };
@@ -32,7 +31,8 @@ $(document).ready(function()
         }
     });
 
-    canvas.addEventListener("mousewheel", function(event)
+
+    map_scroll_event = function(event)
     {
         zoom_power = get_zoom_scale(zoom)
         zoom_delta = zoom
@@ -69,9 +69,12 @@ $(document).ready(function()
         }
 ;
         event.preventDefault();
-    });
+    }
+    canvas.addEventListener("mousewheel", map_scroll_event);
+    canvas.addEventListener("mousewheel", map_scroll_event);
 
-    canvas.addEventListener("mousemove", function(event) {
+
+    map_move_event = function(event){
         mouse_dt = mouse_pos;
         mouse_pos = get_mouse_pos(canvas, event);
         mouse_dt.x -= mouse_pos.x;
@@ -91,15 +94,21 @@ $(document).ready(function()
         //     x: offset.x + mouse_pos.x*(1/Math.pow(2, zoom-2)),
         //     y: offset.y + mouse_pos.y*(1/Math.pow(2, zoom-2))
         // });
-    });
+    }
+    canvas.addEventListener("mousemove", map_move_event);
+    canvas.addEventListener("touchmove", map_move_event);
 
-    canvas.addEventListener("mousedown", function(event) {
+    map_touch_event = function(event) {
         mouse_down = true;
-    });
+    }
+    canvas.addEventListener("mousedown", map_touch_event);
+    canvas.addEventListener("touchstart", map_touch_event);
 
-    canvas.addEventListener("mouseup", function(event){
+    map_release_event = function(event) {
         mouse_down = false;
-    });
+    }
+    canvas.addEventListener("mouseup", map_release_event);
+    canvas.addEventListener("touchend", map_release_event);
 
     function render(){
         update_map(canvas, zoom, offset);

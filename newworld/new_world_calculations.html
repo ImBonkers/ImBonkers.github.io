@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css"
+    />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/new_world_calculations.css" />
+    <script type="text/javascript" src="../src/JQuery.js"></script>
+    <script type="text/javascript" src="../src/calculations.js"></script>
+    <title>New World Calculations</title>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="container">
+        <a href="../index.html" class="logo">Bonkers</a>
+        <a href="../newworld/new_world_map.html" class="right-side"
+          >New World Map</a
+        >
+        <a href="../newworld/new_world_calculations.html" class="right-side"
+          >New World Calculations</a
+        >
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="input-pair-container">
+        <div class="input-pair">
+          <label class="label">What to level</label>
+          <select name="levelable" id="levelable-selector"></select>
+        </div>
+
+        <div class="input-pair">
+          <label class="label">Level</label>
+          <input
+            type="number"
+            id="level_dial"
+            name="level_dial"
+            min="1"
+            value="1"
+          />
+        </div>
+
+        <div class="input-pair">
+          <label class="label">Xp until next level</label>
+          <input
+            type="number"
+            id="next_level_xp_dial"
+            name="next_level_xp_dial"
+            min="0"
+            value="0"
+          />
+        </div>
+
+        <div class="input-pair">
+          <label class="label">Desired level</label>
+          <input
+            type="number"
+            id="desired_level_dial"
+            name="desired_level_dial"
+            min="1"
+            value="1"
+          />
+        </div>
+
+        <div class="input-pair">
+          <label class="label">Total xp needed</label>
+          <input
+            type="text"
+            id="total_xp_needed"
+            name="total_xp_needed"
+            min="1"
+            value="1"
+            readonly
+          />
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
